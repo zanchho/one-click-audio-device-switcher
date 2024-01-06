@@ -37,15 +37,22 @@ const main = async () => {
 }
 
 function isDeviceActive(device, dvcArr) {
-  if (!device || !dvcArr) return false
+  if (!device || !dvcArr) throw "isDeviceActive: Error in parameters"
   const arr = [...dvcArr]
   const deviceInArr = arr.find(dvc => dvc.ID === device.ID)
-  if (!deviceInArr) return false
+  if (!deviceInArr) throw "isDeviceActive: DeviceArr has Error"
 
-  return (
-    deviceInArr.Default.trim() === "true" ||
-    deviceInArr.DefaultCommunication.trim() === "true"
-  )
+  const defaultVal =
+    typeof deviceInArr.Default === "string"
+      ? deviceInArr.Default.trim()
+      : deviceInArr.Default
+
+  const communicationVal =
+    typeof deviceInArr.DefaultCommunication === "string"
+      ? deviceInArr.DefaultCommunication.trim()
+      : deviceInArr.DefaultCommunication
+
+  return defaultVal || communicationVal
 }
 
 function isConfigSet(cfg) {
