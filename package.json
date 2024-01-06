@@ -8,7 +8,7 @@
     "start": "node main.js"
   },
   "keywords": [],
-  "author": "",
+  "author": "zanchho",
   "license": "ISC",
   "dependencies": {
     "prompt-sync": "^4.2.0"
