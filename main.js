@@ -13,16 +13,14 @@ const main = async () => {
 
   try {
     confg = await fetchConfig()
-    console.log("Config received:", confg)
+    console.log("Using received Configuration")
   } catch (error) {
-    //console.error("Error fetching config:", error)
     console.log("Need to set config")
   }
 
   if (!isConfigSet(confg)) {
     await execPSFile(getAllAudioDevicesCommand, true).then(async res => {
       await setConfigViaPrompt([...res])
-      //console.log("devices:", res)
     })
   } else {
     await execPSFile(getAllAudioDevicesCommand, true).then(async res => {
@@ -39,22 +37,11 @@ const main = async () => {
 }
 
 function isDeviceActive(device, dvcArr) {
-  console.log("dvcArr instanceof Array:", dvcArr instanceof Array)
   if (!device || !dvcArr) return false
   const arr = [...dvcArr]
-
-  console.log("isDeviceActive:", device)
-  console.log("dvcArr:")
-  console.log(customConsoleTable(arr))
-  console.table(arr)
   const deviceInArr = arr.find(dvc => dvc.ID === device.ID)
   if (!deviceInArr) return false
-  console.log(
-    "isDeviceActive(NoerrorExits):",
-    deviceInArr.Default.trim() === "true" ||
-      deviceInArr.DefaultCommunication.trim() === "true",
-    deviceInArr.Name
-  )
+
   return (
     deviceInArr.Default.trim() === "true" ||
     deviceInArr.DefaultCommunication.trim() === "true"
@@ -196,8 +183,6 @@ function dumpAllRelevantDeviceData(devices, type) {
     .filter(device => device.Type === type)
     .map(({ Index, Name, Type }) => ({ Index, Name, Type }))
 
-  //console.table(reducedObjArr)
-
   const res = customConsoleTable(reducedObjArr)
   console.log(res)
 }
@@ -223,15 +208,12 @@ async function execPSFile(fileName, shouldReturn) {
     const { stdout } = await exec(
       `powershell -ExecutionPolicy Bypass -File "${__dirname}\\${fileName}"`
     )
-    // console.log("execPSFile:")
-    // console.log(
-    //   `powershell -ExecutionPolicy Bypass -File "${__dirname}\\${fileName}"`
-    // )
-    // console.log("stdout", stdout)
+
     if (shouldReturn) return JSON.parse(stdout.trim())
     return
   } catch (error) {
     console.error("Error:", error.message)
+    //maybe add to Execute setup.ps1 again
     throw error
   }
 }
@@ -239,6 +221,7 @@ async function writeCfgToFile(newCfgStr) {
   fs.writeFile(cgfFile, newCfgStr, err => {
     if (err) throw err
     console.log("New Config Saved!")
+    console.log("Restart to switch Audio Devices")
   })
 }
 main()
