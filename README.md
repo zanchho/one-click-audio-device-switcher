@@ -16,8 +16,8 @@ To use the "One-Click Audio Device Switcher," follow these steps:
 
 1. Run the script: `npm start`
 2. If no configuration is set, the script will prompt you to choose your preferred audio devices for two different configurations (Option A and Option B).
-3. Once configurations are set, the script will automatically switch between devices.
-4. For Resetting the configurations 
+3. Once the configuration is set, the script will automatically switch between devices.
+4. For resetting the configurations delete `confg.json` in the Project Folder.
 
 ## Requirements
 
