@@ -1,0 +1,6 @@
+@echo off
+echo Installing Powershell dependency... 
+powershell.exe -ExecutionPolicy Bypass -File .\setup.ps1
+
+echo Running npm install...
+npm install
